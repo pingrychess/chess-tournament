@@ -80,6 +80,7 @@
     </div>
 
     <script>
+        // Replace with your Google Sheet ID
         const SHEET_ID = '1dii9ZYNG25xDr2ShnEYLfQ_FvlIPruhc4IxoYJUVXF4';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
@@ -95,44 +96,44 @@
                 const response = await fetch(SHEET_URL);
                 const text = await response.text();
                 const data = JSON.parse(text.substring(47).slice(0, -2));
-                
+
                 const tbody = document.getElementById('leaderboard-body');
                 tbody.innerHTML = '';
 
                 data.table.rows.forEach(row => {
                     const tr = document.createElement('tr');
-                    
+
                     // Rank
                     const rankTd = document.createElement('td');
                     rankTd.textContent = row.c[0]?.v || '';
-                    
+
                     // Name
                     const nameTd = document.createElement('td');
                     nameTd.textContent = row.c[1]?.v || '';
-                    
+
                     // Record
                     const recordTd = document.createElement('td');
                     recordTd.textContent = row.c[2]?.v || '';
-                    
+
                     // Recent Results
                     const resultsTd = document.createElement('td');
                     const resultsDiv = document.createElement('div');
                     resultsDiv.className = 'recent-results';
-                    
+
                     // Add the three most recent results
-                    for(let i = 3; i <= 5; i++) {
-                        if(row.c[i]?.v) {
+                    for (let i = 3; i <= 5; i++) {
+                        if (row.c[i]?.v) {
                             resultsDiv.appendChild(createResultBadge(row.c[i].v));
                         }
                     }
-                    
+
                     resultsTd.appendChild(resultsDiv);
-                    
+
                     tr.appendChild(rankTd);
                     tr.appendChild(nameTd);
                     tr.appendChild(recordTd);
                     tr.appendChild(resultsTd);
-                    
+
                     tbody.appendChild(tr);
                 });
             } catch (error) {
