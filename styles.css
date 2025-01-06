@@ -1,0 +1,121 @@
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.accordion-section {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.2s;
+}
+
+.accordion-section:hover {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.accordion-header {
+    padding: 1rem 1.5rem;
+    background: white;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.accordion-header:hover {
+    background: #f8fafc;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: white;
+}
+
+.accordion-content.active {
+    max-height: 500px;
+    padding: 1rem 1.5rem;
+}
+
+.section-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    color: #2563eb;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: #64748b;
+}
+
+.bullet-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bullet-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #475569;
+}
+
+.bullet-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #2563eb;
+}
+
+.subsection {
+    border-left: 2px solid #2563eb;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.subsection-title {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.chevron {
+    transition: transform 0.3s;
+}
+
+.chevron.active {
+    transform: rotate(180deg);
+}
