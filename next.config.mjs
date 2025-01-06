@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
-// Configuration for GitHub Pages deployment
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
   basePath: '/chess-tournament',
+  assetPrefix: '/chess-tournament/',
+  trailingSlash: true,
 };
 
 export default nextConfig;

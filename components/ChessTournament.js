@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sword, ChevronDown, Trophy, Calendar, Shield, Users, BookOpen, Star } from 'lucide-react';
 
 const AccordionSection = ({ title, children, icon: Icon }) => {
