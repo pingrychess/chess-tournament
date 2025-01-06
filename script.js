@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     header.innerHTML = `
         <h1 class="title">CB Newton Cup</h1>
         <p class="subtitle">Your Epic Chess Adventure Awaits!</p>
+        <a href="leaderboard.html" class="text-blue-600 hover:text-blue-800 font-semibold mt-4 inline-block">View Tournament Leaderboard</a>
     `;
     container.appendChild(header);
     
