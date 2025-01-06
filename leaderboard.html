@@ -5,54 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CB Newton Cup Leaderboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .leaderboard-table th {
-            background: #2563eb;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-        }
-        .leaderboard-table td {
-            padding: 12px;
-            border-top: 1px solid #e2e8f0;
-        }
-        .leaderboard-table tr:nth-child(even) {
-            background: #f8fafc;
-        }
-        .win { color: #059669; }
-        .loss { color: #dc2626; }
-        .recent-results {
-            display: flex;
-            gap: 8px;
-        }
-        .result-badge {
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-        }
-        .win-badge {
-            background: #dcfce7;
-            color: #059669;
-        }
-        .loss-badge {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-    </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-8">
@@ -103,7 +55,7 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzEUxSKYtYrSvIk3YqscsZAGltPA8a7leEcPtPmTXNLplsWCRCJNZ4DmwV1UDD8oYCn/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwExGmGwqwmZjzEJo_eTRrvREwnSDUmeyOZr07D4xChEdLaTHU05IUaaBnG6P9zxhJ1/exec';
         const form = document.getElementById('resultForm');
         const successMessage = document.getElementById('successMessage');
 

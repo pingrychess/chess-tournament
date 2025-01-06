@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Updated January 6, 2025 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,34 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app"></div>
-    <script src="script.js"></script>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">Welcome to the CB Newton Cup</h1>
+            <p class="text-lg text-gray-600 mb-8">Your epic chess adventure begins here! Compete, climb the ranks, and claim glory in the ultimate chess tournament.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="leaderboard.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">View Leaderboard</a>
+                <a href="#rules" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">Tournament Rules</a>
+            </div>
+        </div>
+
+        <div id="rules" class="mt-12">
+            <h2 class="text-2xl font-bold mb-4 text-center">Tournament Rules</h2>
+            <ul class="list-disc list-inside text-gray-700">
+                <li>All matches follow standard chess rules (FIDE).</li>
+                <li>Each player has a 10-minute clock for their moves.</li>
+                <li>Results must be reported within 24 hours of match completion.</li>
+                <li>Players can challenge opponents up to 5 ranks above them.</li>
+                <li>The top 8 players will advance to playoffs for a single-elimination showdown.</li>
+            </ul>
+        </div>
+
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-4 text-center">Get Started</h2>
+            <p class="text-center text-gray-600">Ready to play? Submit your match results and view the leaderboard to see how you stack up!</p>
+            <div class="flex justify-center mt-4">
+                <a href="leaderboard.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Submit Results</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
