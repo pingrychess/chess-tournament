@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CB Newton Cup Leaderboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .leaderboard-table th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .leaderboard-table td {
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .leaderboard-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .win { color: #059669; }
+        .loss { color: #dc2626; }
+        .recent-results {
+            display: flex;
+            gap: 8px;
+        }
+        .result-badge {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+        }
+        .win-badge {
+            background: #dcfce7;
+            color: #059669;
+        }
+        .loss-badge {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-8">CB Newton Cup Leaderboard</h1>
+            <div id="leaderboard" class="relative overflow-x-auto shadow-md rounded-lg">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Student Name</th>
+                            <th>Record</th>
+                            <th>Recent Results</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <tr>
+                            <td colspan="4" class="text-center py-4">Loading leaderboard data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-center mb-4">Submit Match Result</h2>
+        <form id="resultForm" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label for="player" class="block text-gray-700 font-bold mb-2">Your Name:</label>
+                <input type="text" id="player" name="player" class="w-full p-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="opponent" class="block text-gray-700 font-bold mb-2">Opponent's Name:</label>
+                <input type="text" id="opponent" name="opponent" class="w-full p-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="result" class="block text-gray-700 font-bold mb-2">Result:</label>
+                <select id="result" name="result" class="w-full p-2 border rounded-lg" required>
+                    <option value="Win">Win</option>
+                    <option value="Loss">Loss</option>
+                    <option value="Draw">Draw</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Submit</button>
+        </form>
+        <div id="successMessage" class="hidden mt-4 text-green-600 font-bold text-center">Result submitted successfully!</div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzEUxSKYtYrSvIk3YqscsZAGltPA8a7leEcPtPmTXNLplsWCRCJNZ4DmwV1UDD8oYCn/exec';
+        const form = document.getElementById('resultForm');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(scriptURL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    successMessage.classList.remove('hidden');
+                    form.reset();
+                    updateLeaderboard(); // Refresh leaderboard after submission
+                } else {
+                    alert('Error submitting result. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error submitting result. Please try again.');
+            }
+        });
+
+        const SHEET_ID = '1dii9ZYNG25xDr2ShnEYLfQ_FvlIPruhc4IxoYJUVXF4';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+        async function updateLeaderboard() {
+            try {
+                const response = await fetch(SHEET_URL);
+                const text = await response.text();
+                const data = JSON.parse(text.substring(47).slice(0, -2));
+
+                const tbody = document.getElementById('leaderboard-body');
+                tbody.innerHTML = '';
+
+                data.table.rows.forEach(row => {
+                    const tr = document.createElement('tr');
+
+                    const rankTd = document.createElement('td');
+                    rankTd.textContent = row.c[0]?.v || '';
+
+                    const nameTd = document.createElement('td');
+                    nameTd.textContent = row.c[1]?.v || '';
+
+                    const recordTd = document.createElement('td');
+                    recordTd.textContent = row.c[2]?.v || '';
+
+                    const resultsTd = document.createElement('td');
+                    const resultsDiv = document.createElement('div');
+                    resultsDiv.className = 'recent-results';
+
+                    for (let i = 3; i <= 5; i++) {
+                        if (row.c[i]?.v) {
+                            const badge = document.createElement('span');
+                            badge.className = `result-badge ${row.c[i].v === 'W' ? 'win-badge' : 'loss-badge'}`;
+                            badge.textContent = row.c[i].v;
+                            resultsDiv.appendChild(badge);
+                        }
+                    }
+
+                    resultsTd.appendChild(resultsDiv);
+
+                    tr.appendChild(rankTd);
+                    tr.appendChild(nameTd);
+                    tr.appendChild(recordTd);
+                    tr.appendChild(resultsTd);
+
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching leaderboard data:', error);
+                document.getElementById('leaderboard-body').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-red-600">
+                            Error loading leaderboard data. Please try again later.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        updateLeaderboard();
+        setInterval(updateLeaderboard, 300000);
+    </script>
+</body>
+</html>
