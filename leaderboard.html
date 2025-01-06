@@ -59,7 +59,6 @@
         <div class="max-w-4xl mx-auto">
             <h1 class="text-3xl font-bold text-center mb-8">CB Newton Cup Leaderboard</h1>
             <div id="leaderboard" class="relative overflow-x-auto shadow-md rounded-lg">
-                <!-- Leaderboard will be populated here -->
                 <table class="leaderboard-table">
                     <thead>
                         <tr>
@@ -79,17 +78,55 @@
         </div>
     </div>
 
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-center mb-4">Submit Match Result</h2>
+        <form id="resultForm" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label for="player" class="block text-gray-700 font-bold mb-2">Your Name:</label>
+                <input type="text" id="player" name="player" class="w-full p-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="opponent" class="block text-gray-700 font-bold mb-2">Opponent's Name:</label>
+                <input type="text" id="opponent" name="opponent" class="w-full p-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="result" class="block text-gray-700 font-bold mb-2">Result:</label>
+                <select id="result" name="result" class="w-full p-2 border rounded-lg" required>
+                    <option value="Win">Win</option>
+                    <option value="Loss">Loss</option>
+                    <option value="Draw">Draw</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Submit</button>
+        </form>
+        <div id="successMessage" class="hidden mt-4 text-green-600 font-bold text-center">Result submitted successfully!</div>
+    </div>
+
     <script>
-        // Replace with your Google Sheet ID
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzEUxSKYtYrSvIk3YqscsZAGltPA8a7leEcPtPmTXNLplsWCRCJNZ4DmwV1UDD8oYCn/exec';
+        const form = document.getElementById('resultForm');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(scriptURL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    successMessage.classList.remove('hidden');
+                    form.reset();
+                    updateLeaderboard(); // Refresh leaderboard after submission
+                } else {
+                    alert('Error submitting result. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error submitting result. Please try again.');
+            }
+        });
+
         const SHEET_ID = '1dii9ZYNG25xDr2ShnEYLfQ_FvlIPruhc4IxoYJUVXF4';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-
-        function createResultBadge(result) {
-            const badge = document.createElement('span');
-            badge.className = `result-badge ${result === 'W' ? 'win-badge' : 'loss-badge'}`;
-            badge.textContent = result;
-            return badge;
-        }
 
         async function updateLeaderboard() {
             try {
@@ -103,27 +140,25 @@
                 data.table.rows.forEach(row => {
                     const tr = document.createElement('tr');
 
-                    // Rank
                     const rankTd = document.createElement('td');
                     rankTd.textContent = row.c[0]?.v || '';
 
-                    // Name
                     const nameTd = document.createElement('td');
                     nameTd.textContent = row.c[1]?.v || '';
 
-                    // Record
                     const recordTd = document.createElement('td');
                     recordTd.textContent = row.c[2]?.v || '';
 
-                    // Recent Results
                     const resultsTd = document.createElement('td');
                     const resultsDiv = document.createElement('div');
                     resultsDiv.className = 'recent-results';
 
-                    // Add the three most recent results
                     for (let i = 3; i <= 5; i++) {
                         if (row.c[i]?.v) {
-                            resultsDiv.appendChild(createResultBadge(row.c[i].v));
+                            const badge = document.createElement('span');
+                            badge.className = `result-badge ${row.c[i].v === 'W' ? 'win-badge' : 'loss-badge'}`;
+                            badge.textContent = row.c[i].v;
+                            resultsDiv.appendChild(badge);
                         }
                     }
 
@@ -148,7 +183,6 @@
             }
         }
 
-        // Update immediately and then every 5 minutes
         updateLeaderboard();
         setInterval(updateLeaderboard, 300000);
     </script>
